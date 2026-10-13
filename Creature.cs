@@ -9,8 +9,6 @@ namespace Toolkit;
 public record Creature
 {
     public string Name { get; }
-
-    public CreatureLevel Level { get; }
     
     public HealthPoints HealthPoints { get; }
 
@@ -21,13 +19,11 @@ public record Creature
     public int ExperienceReward { get; }
 
     private Creature(string name, 
-        CreatureLevel level, 
-        HealthPoints HealthPoints, 
-        AbilityScore Abilities,
+        HealthPoints healthPoints, 
+        AbilityScore abilityScore,
         int experienceReward)
     {
-        Name = name;
-        Level = level;
+        Name = name; 
         this.HealthPoints = HealthPoints;
         this.Abilities = Abilities;
         ExperienceReward = experienceReward;
@@ -37,31 +33,31 @@ public record Creature
     /// Builds a creature, or refuses to.  Every creature in the program comes
     /// through here.
     /// </summary>
-    public static Creature Create(string name,
+    public static Creature Create(string name, int currentHealth, int maxHealth,
         int strength, int dexterity, int constitution,
         int intelligence, int wisdom, int charisma,
         int experienceReward)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("A creature needs a name.", nameof(name));
-
-        var level = CreatureLevel.Level;
+        
 
         var healthPoints =
-            Toolkit.HealthPoints.Create(40);
+            Toolkit.HealthPoints.Create(maxHealth);
+        
 
         var creaturestats = AbilityScore.Create(
                                 strength, dexterity,
-                                constitution, wisdom,
-                                level)
-                            ?? AbilityScore.Create(20, 20,
-                                20, 20,
-                                20, 02);
-        var reward = ExperienceReward.Default;
+                                constitution, intelligence, wisdom, charisma)
+                            ?? AbilityScore.Create(10, 10,
+                                10, 10,
+                                10, 1);
+        if (experienceReward <= 0)
+            throw new ArgumentException("Experience reward must be positive.", 
+                nameof(experienceReward));
         
 
-        return new Creature(name,
-            level, healthPoints,
+        return new Creature(name, healthPoints,
             creaturestats,
             experienceReward);
     }

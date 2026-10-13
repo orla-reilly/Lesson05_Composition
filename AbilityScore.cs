@@ -40,5 +40,13 @@ public record AbilityScore
             return null;
         if (charisma < 3 || charisma > 18)
             return null;
+        return new AbilityScore(
+            strength, 
+            dexterity, 
+            constitution, 
+            intelligence, 
+            wisdom, 
+            charisma);
+            
     }
 }

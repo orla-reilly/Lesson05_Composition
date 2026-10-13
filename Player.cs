@@ -44,7 +44,7 @@ public record Player
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("A player needs a name.", nameof(name));
 
-        var level = PlayerLevel.Level;
+        var level = PlayerLevel.Level1;
 
         var healthPoints = HealthPoints.Create(20);
 
